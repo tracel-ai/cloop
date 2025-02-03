@@ -2,6 +2,12 @@
 name = "cloop"
 version = "0.1.0"
 edition = "2021"
+authors = ["Tracel Technologies Inc."]
+repository = "https://github.com/tracel-ai/cloop"
 
 [dependencies]
-clap = { version = "4", features = ["derive"] }
+anyhow = "1"
+clap = { version = "4", features = ["derive", "string"] }
+shlex = "1"
+rustyline = { version = "15", features = ["custom-bindings", "derive"] }
+regex = "1"
