@@ -26,16 +26,15 @@ where
     }
 }
 
-pub struct Shell<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> {
+pub struct Shell<T, I: InputReader, P: InputParser<T>, H: Handler<P::Output, T>> {
     prompt: String,
     context: T,
     input_reader: I,
     input_parser: P,
     handler: H,
-    args_marker: std::marker::PhantomData<A>,
 }
 
-impl<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> Shell<A, T, I, P, H> {
+impl<T, I: InputReader, P: InputParser<T>, H: Handler<P::Output, T>> Shell<T, I, P, H> {
     pub fn new(
         prompt: impl std::fmt::Display,
         context: T,
@@ -49,7 +48,6 @@ impl<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> Shell<A, T, I
             input_reader,
             input_parser,
             handler,
-            args_marker: std::marker::PhantomData,
         }
     }
 
