@@ -18,11 +18,7 @@ where
 /// This allows you to use clap's ArgMatches as a parser for the Shell struct
 impl<T> InputParser<T> for clap::Command {
     type Output = clap::ArgMatches;
-    fn parse(
-        &self,
-        input: &str,
-        _: &mut T,
-    ) -> Result<Self::Output, impl std::fmt::Display> {
+    fn parse(&self, input: &str, _: &mut T) -> Result<Self::Output, impl std::fmt::Display> {
         let raw_args = shlex::split(input).ok_or("Invalid quoting")?;
         self.clone()
             .try_get_matches_from_mut(raw_args)

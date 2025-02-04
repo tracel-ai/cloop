@@ -1,5 +1,5 @@
-use crate::input_reader::{InputReader, InputResult};
 use crate::input_parser::InputParser;
+use crate::input_reader::{InputReader, InputResult};
 
 pub type ShellResult = anyhow::Result<ShellAction>;
 

@@ -38,7 +38,7 @@ where
     I: rustyline::history::History,
 {
     fn read(&mut self, prompt: &str) -> io::Result<InputResult> {
-        match self.readline(&prompt) {
+        match self.readline(prompt) {
             Ok(s) => {
                 self.add_history_entry(&s)
                     .map_err(convert_rustyline_to_io)?;

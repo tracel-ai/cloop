@@ -1,18 +1,26 @@
-[package]
-authors = ["Tracel Technologies Inc."]
-categories = ["command-line-interface", "command-line-utilities", "development-tools"]
-description = "Cloop - Clap in a loop (easily create a shell integrated with Clap)"
-keywords = ["cli", "shell"]
-edition = "2021"
-license = "MIT OR Apache-2.0"
-name = "cloop"
-readme = "README.md"
-version = "0.1.0"
-rust-version = "1.79"
+[workspace]
+# Try
+# require version 2 to avoid "feature" additiveness for dev-dependencies
+# https://doc.rust-lang.org/cargo/reference/resolver.html#feature-resolver-version-2
+resolver = "2"
 
-[dependencies]
+members = [
+    "crates/cloop",
+    "xtask",
+]
+
+[workspace.package]
+edition = "2021"
+version = "1.1.8"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+
+[workspace.dependencies]
 anyhow = "1"
 clap = { version = "4", features = ["derive", "string"] }
 shlex = "1"
 rustyline = { version = "15", features = ["custom-bindings", "derive"] }
 regex = "1"
+
+[profile.dev]
+debug = 0 # Speed up compilation time and not necessary.
