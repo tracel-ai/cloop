@@ -33,7 +33,6 @@ pub struct Shell<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> {
     input_parser: P,
     handler: H,
     args_marker: std::marker::PhantomData<A>,
-    context_marker: std::marker::PhantomData<T>,
 }
 
 impl<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> Shell<A, T, I, P, H> {
@@ -51,7 +50,6 @@ impl<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> Shell<A, T, I
             input_parser,
             handler,
             args_marker: std::marker::PhantomData,
-            context_marker: std::marker::PhantomData,
         }
     }
 
