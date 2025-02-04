@@ -80,13 +80,11 @@ impl<A, T, I: InputReader, P: InputParser<A, T>, H: Handler<A, T>> Shell<A, T, I
     }
 
     fn handle_input(&mut self, input: &str) -> Result<ShellResult, String> {
-        let raw_args = shlex::split(input).ok_or("Invalid quoting")?;
-
         // Here we are using the parser to parse the arguments before handing them to the handler
         // so that in case of a parsing error, we can early return and print the error message
         let args = self
             .input_parser
-            .parse(raw_args, &mut self.context)
+            .parse(input, &mut self.context)
             .map_err(|e| e.to_string())?;
 
         let res = self.handler.handle(args, &mut self.context);

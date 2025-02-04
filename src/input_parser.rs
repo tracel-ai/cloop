@@ -1,14 +1,14 @@
 pub trait InputParser<A, T> {
-    fn parse(&self, args: Vec<String>, context: &mut T) -> Result<A, impl std::fmt::Display>;
+    fn parse(&self, input: &str, context: &mut T) -> Result<A, impl std::fmt::Display>;
 }
 
 impl<A, T, F, E> InputParser<A, T> for F
 where
-    F: Fn(Vec<String>, &mut T) -> Result<A, E>,
+    F: Fn(&str, &mut T) -> Result<A, E>,
     E: std::fmt::Display,
 {
-    fn parse(&self, args: Vec<String>, context: &mut T) -> Result<A, impl std::fmt::Display> {
-        self(args, context)
+    fn parse(&self, input: &str, context: &mut T) -> Result<A, impl std::fmt::Display> {
+        self(input, context)
     }
 }
 
@@ -17,11 +17,12 @@ where
 impl<T> InputParser<clap::ArgMatches, T> for clap::Command {
     fn parse(
         &self,
-        args: Vec<String>,
+        input: &str,
         _: &mut T,
     ) -> Result<clap::ArgMatches, impl std::fmt::Display> {
+        let raw_args = shlex::split(input).ok_or("Invalid quoting")?;
         self.clone()
-            .try_get_matches_from_mut(args)
+            .try_get_matches_from_mut(raw_args)
             .map_err(|e| e.to_string())
     }
 }
@@ -35,8 +36,9 @@ impl<T: clap::Parser> Default for ClapParser<T> {
 }
 
 impl<P: clap::Parser, T> InputParser<P, T> for ClapParser<P> {
-    fn parse(&self, args: Vec<String>, _: &mut T) -> Result<P, impl std::fmt::Display> {
-        P::try_parse_from(args)
+    fn parse(&self, input: &str, _: &mut T) -> Result<P, impl std::fmt::Display> {
+        let raw_args = shlex::split(input).ok_or("Invalid quoting")?;
+        P::try_parse_from(raw_args).map_err(|e| e.to_string())
     }
 }
 
@@ -49,9 +51,10 @@ impl<S: clap::Subcommand> Default for ClapSubcommandParser<S> {
 }
 
 impl<S: clap::Subcommand, T> InputParser<S, T> for ClapSubcommandParser<S> {
-    fn parse(&self, args: Vec<String>, _: &mut T) -> Result<S, impl std::fmt::Display> {
+    fn parse(&self, input: &str, _: &mut T) -> Result<S, impl std::fmt::Display> {
+        let raw_args = shlex::split(input).ok_or("Invalid quoting")?;
         S::augment_subcommands(clap::Command::default().multicall(true))
-            .try_get_matches_from_mut(args)
+            .try_get_matches_from_mut(raw_args)
             .map_err(|e| e.to_string())
             .and_then(|m| S::from_arg_matches(&m).map_err(|e| e.to_string()))
     }
