@@ -1,9 +1,14 @@
 [package]
-name = "cloop"
-version = "0.1.0"
-edition = "2021"
 authors = ["Tracel Technologies Inc."]
-repository = "https://github.com/tracel-ai/cloop"
+categories = ["command-line-interface", "command-line-utilities", "development-tools"]
+description = "Cloop - Clap in a loop (easily create a shell integrated with Clap)"
+keywords = ["cli", "shell"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+name = "cloop"
+readme = "README.md"
+version = "0.1.0"
+rust-version = "1.79"
 
 [dependencies]
 anyhow = "1"
