@@ -6,4 +6,4 @@ edition = "2021"
 [dependencies]
 log = "0.4.25"
 strum = { version = "0.26.3", features = ["derive"] }
-tracel-xtask = "1.1.8"
+tracel-xtask = { version = "=5.0.0", features = ["build", "bump", "check", "compile", "fix", "publish", "test", "utils-time"] }
